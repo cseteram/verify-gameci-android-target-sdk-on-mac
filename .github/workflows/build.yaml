@@ -10,27 +10,43 @@ jobs:
   build:
     name: Build for Android
     runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        android-target-sdk:
+          - AndroidApiLevelAuto
+          - AndroidApiLevel31
+          - AndroidApiLevel32
+          - AndroidApiLevel33
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache
+        uses: actions/cache@v3
         with:
           path: Library
           key: Library-Android-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-Android-
             Library-
-      - run: |
+      - name: Install Unity and android module
+        run: |
           /usr/local/bin/brew install unity-hub
           "/Applications/Unity Hub.app/Contents/MacOS/Unity Hub" -- --headless \
             install --version 2021.3.15f1 --changeset e8e88683f834 --module android --childModules
-      - uses: game-ci/unity-builder@e334dc785ad6e0bf96de76abc8a8c7511958dbab
+      - name: Build
+        uses: game-ci/unity-builder@e334dc785ad6e0bf96de76abc8a8c7511958dbab
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: Android
-      - uses: actions/upload-artifact@v3
+          androidTargetSdkVersion: ${{ matrix.android-target-sdk }}
+      - name: Print AndroidTargetSdkVersion
+        run: cat ProjectSettings/ProjectSettings.asset | yq '.PlayerSettings.AndroidTargetSdkVersion'
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: Build-Android
           path: build/Android
@@ -38,25 +54,40 @@ jobs:
           retention-days: 7
 
   build-on-pr:
-    name: Build for Android
+    name: Build for Android (PR)
     runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        android-target-sdk:
+          - AndroidApiLevelAuto
+          - AndroidApiLevel31
+          - AndroidApiLevel32
+          - AndroidApiLevel33
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache
+        uses: actions/cache@v3
         with:
           path: Library
           key: Library-Android-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-Android-
             Library-
-      - uses: cseteram/unity-builder@main
+      - name: Build
+        uses: cseteram/unity-builder@main
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: Android
-      - uses: actions/upload-artifact@v3
+          androidTargetSdkVersion: ${{ matrix.android-target-sdk }}
+      - name: Print AndroidTargetSdkVersion
+        run: cat ProjectSettings/ProjectSettings.asset | yq '.PlayerSettings.AndroidTargetSdkVersion'
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: Build-Android
           path: build/Android
