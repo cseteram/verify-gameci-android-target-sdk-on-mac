@@ -30,6 +30,8 @@ jobs:
           restore-keys: |
             Library-Android-
             Library-
+      - name: Print environment variables before build
+        run: env
       - name: Install Unity and android module
         run: |
           /usr/local/bin/brew install unity-hub
@@ -44,6 +46,8 @@ jobs:
         with:
           targetPlatform: Android
           androidTargetSdkVersion: ${{ matrix.android-target-sdk }}
+      - name: Print environment variables after build
+        run: env
       - name: Print AndroidTargetSdkVersion
         run: cat ProjectSettings/ProjectSettings.asset | yq '.PlayerSettings.AndroidTargetSdkVersion'
       - name: List installed android SDK platforms
@@ -79,6 +83,8 @@ jobs:
           restore-keys: |
             Library-Android-
             Library-
+      - name: Print environment variables before build
+        run: env
       - name: Build
         uses: cseteram/unity-builder@main
         env:
@@ -88,6 +94,8 @@ jobs:
         with:
           targetPlatform: Android
           androidTargetSdkVersion: ${{ matrix.android-target-sdk }}
+      - name: Print environment variables after build
+        run: env
       - name: Print AndroidTargetSdkVersion
         run: cat ProjectSettings/ProjectSettings.asset | yq '.PlayerSettings.AndroidTargetSdkVersion'
       - name: List installed android SDK platforms
