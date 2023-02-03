@@ -12,6 +12,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         android-target-sdk:
           - AndroidApiLevelAuto
@@ -58,6 +59,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         android-target-sdk:
           - AndroidApiLevelAuto
