@@ -16,9 +16,11 @@ jobs:
       matrix:
         android-target-sdk:
           - AndroidApiLevelAuto
+          - AndroidApiLevel28
+          - AndroidApiLevel29
+          - AndroidApiLevel30
           - AndroidApiLevel31
           - AndroidApiLevel32
-          - AndroidApiLevel33
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -65,9 +67,11 @@ jobs:
       matrix:
         android-target-sdk:
           - AndroidApiLevelAuto
+          - AndroidApiLevel28
+          - AndroidApiLevel29
+          - AndroidApiLevel30
           - AndroidApiLevel31
           - AndroidApiLevel32
-          - AndroidApiLevel33
     steps:
       - name: Checkout
         uses: actions/checkout@v3
