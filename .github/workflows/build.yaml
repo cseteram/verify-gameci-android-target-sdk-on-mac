@@ -15,12 +15,12 @@ jobs:
       max-parallel: 2
       matrix:
         android-target-sdk:
-          - AndroidApiLevelAuto
           - AndroidApiLevel28
           - AndroidApiLevel29
           - AndroidApiLevel30
           - AndroidApiLevel31
           - AndroidApiLevel32
+          - AndroidApiLevel33
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -50,6 +50,10 @@ jobs:
         run: cat ProjectSettings/ProjectSettings.asset | yq '.PlayerSettings.AndroidTargetSdkVersion'
       - name: List installed android SDK platforms
         run: ls /Applications/Unity/Hub/Editor/2021.3.15f1/PlaybackEngines/AndroidPlayer/SDK/platforms
+      - name: Print Androidmanifest
+        run: |
+          BUILD_APK=$(find ./build -type f -name '*.apk')
+          "${ANDROID_HOME}/tools/bin/apkanalyzer" manifest print ${BUILD_APK}
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -66,12 +70,12 @@ jobs:
       max-parallel: 2
       matrix:
         android-target-sdk:
-          - AndroidApiLevelAuto
           - AndroidApiLevel28
           - AndroidApiLevel29
           - AndroidApiLevel30
           - AndroidApiLevel31
           - AndroidApiLevel32
+          - AndroidApiLevel33
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -96,6 +100,10 @@ jobs:
         run: cat ProjectSettings/ProjectSettings.asset | yq '.PlayerSettings.AndroidTargetSdkVersion'
       - name: List installed android SDK platforms
         run: ls /Applications/Unity/Hub/Editor/2021.3.15f1/PlaybackEngines/AndroidPlayer/SDK/platforms
+      - name: Print Androidmanifest
+        run: |
+          BUILD_APK=$(find ./build -type f -name '*.apk')
+          "${ANDROID_HOME}/tools/bin/apkanalyzer" manifest print ${BUILD_APK}
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
