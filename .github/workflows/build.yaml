@@ -46,6 +46,8 @@ jobs:
           androidTargetSdkVersion: ${{ matrix.android-target-sdk }}
       - name: Print AndroidTargetSdkVersion
         run: cat ProjectSettings/ProjectSettings.asset | yq '.PlayerSettings.AndroidTargetSdkVersion'
+      - name: List installed android SDK platforms
+        run: ls /Applications/Unity/Hub/Editor/2021.3.15f1/PlaybackEngines/AndroidPlayer/SDK/platforms
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -88,6 +90,8 @@ jobs:
           androidTargetSdkVersion: ${{ matrix.android-target-sdk }}
       - name: Print AndroidTargetSdkVersion
         run: cat ProjectSettings/ProjectSettings.asset | yq '.PlayerSettings.AndroidTargetSdkVersion'
+      - name: List installed android SDK platforms
+        run: ls /Applications/Unity/Hub/Editor/2021.3.15f1/PlaybackEngines/AndroidPlayer/SDK/platforms
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
